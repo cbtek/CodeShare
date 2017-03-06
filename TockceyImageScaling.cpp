@@ -1,33 +1,47 @@
 #include <iostream>
 
+static double c_Granularity = .001;
+
 int main(int argc, char ** argv)
 {
-	
+    int originalX = 800;
+    int originalY = 450;
+    int divW = 500;
+    int divH = 500;
+    float ratioW = (float)originalX / (float)originalY;
+    float ratioH = (float)originalY / (float)originalX;
 
-	int imageW = 1024;
-	int imageH = 768;
+    //set the scale factor what you want
+    float scaleFactor = 1.0;
+    int newW = (ratioW * originalY) * scaleFactor;
+    int newH = (ratioH * originalX) * scaleFactor;
 
-	int divW = 500;
-	int divH = 500;
+    if (newW > newH)
+    {
+        while (newW > divW)
+        {
+            scaleFactor -= c_Granularity;
+            newW = (ratioW * originalY) * scaleFactor;
+            newH = (ratioH * originalX) * scaleFactor;
+        }
+    }
+    else
+    {
+        while (newH > divH)
+        {
+            scaleFactor -= c_Granularity;
+            newW = (ratioW * originalY) * scaleFactor;
+            newH = (ratioH * originalX) * scaleFactor;
+        }
+    }
 
-	float ratioW = (float)imageW / (float)imageH;
-	float ratioH = (float)imageH / (float)imageW;
-
-	//if you already know either divW or divH then just multiply the ratio
-	//by the correct imageW and imageH
-
-	int newW = divW * (float)ratioW;
-	int newH = divH * (float)ratioH;
-	
-	//The following lines are just printing out results
-	std::cout << "Image W: " << imageW << std::endl;
-	std::cout << "Image H: " << imageH << std::endl;
-	std::cout << "Div W: " << divW << std::endl;
-	std::cout << "Div H: " << divH << std::endl;
-
-	std::cout << std::endl;
-	std::cout << "New W: " << newW << std::endl;
-	std::cout << "New H: " << newH << std::endl;
-
-	return 0;
+    //The following lines are just printing out results
+    std::cout << "Old W: " << originalX << std::endl;
+    std::cout << "Old H: " << originalY << std::endl;
+    std::cout << "div W: " << divW << std::endl;
+    std::cout << "div H: " << divH << std::endl;
+    std::cout << std::endl;
+    std::cout << "New W: " << newW << std::endl;
+    std::cout << "New H: " << newH << std::endl;
+    return 0;
 }
